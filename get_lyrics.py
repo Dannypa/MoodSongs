@@ -43,9 +43,17 @@ def load_lyrics():  # function to load data
                       VALUES ('{artist}', '{name}', '{text}')"""
             cur.execute(cmd)
             con.commit()
-            lyrics.append((artist, name, text))
         con.close()
 
 
+def to_array():
+    con = sqlite3.connect("lyrics.db")
+    cur = con.cursor()
+    data = cur.execute("""SELECT artist, name, text FROM lyrics WHERE text <> '' """).fetchall()
+    for d in data:
+        lyrics.append((d[0], d[1], d[2]))
+
+
 if __name__ == "__main__":
-    load_lyrics()
+    to_array()
+    print(lyrics)
